@@ -5,7 +5,7 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, StdCtrls, Mask, Buttons, uCadastro, uEndereco, XmlDoc, XMLIntf,
-  uILogavel, uAcoes;
+  uILogavel, uAcoes, uListaCadastro;
 
 type
   TFrmCadastro = class(TForm, ILogavel)
@@ -45,8 +45,10 @@ type
     procedure FormShow(Sender: TObject);
     procedure btnPesquisarCepClick(Sender: TObject);
     procedure btnCadastrarClick(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
   private
     FEndereco: TEndereco;
+    FListaCadastro: TListaCadastro;
 
     procedure InformarProcessamento(PTexto: string);
     procedure LimpaForm();
@@ -140,17 +142,21 @@ procedure TFrmCadastro.btnCadastrarClick(Sender: TObject);
 var
   arq: string;
   acoes: TAcoes;
+  cad: TCadastro;
 begin
   if (ValidarCadastro()) then
   begin
-    acoes := TAcoes.Create(self, self, CarregaObj);
+    cad := CarregaObj();
+    acoes := TAcoes.Create(self, self, cad);
     arq := acoes.ExportarXml();
-    
+
     //TODO: informar o remetente do e-mail, e as outras configurações de SMTP,
     // após isto, descomentar a linha abaixo
     //acoes.EnviarEmail('', 'Altec - Cadastro', arq);
 
     InformarProcessamento('Cadastro finalizado com sucesso.');
+    FListaCadastro.Adicionar(cad);
+    InformarProcessamento(IntToStr(FListaCadastro.Count) + ' itens cadastrados');
     LimpaForm();
   end;
 end;
@@ -174,6 +180,11 @@ begin
 
   Result := (not lblObrigatorioNome.Visible)
         and (not lblObrigatorioEmail.Visible);
+end;
+
+procedure TFrmCadastro.FormCreate(Sender: TObject);
+begin
+  FListaCadastro := TListaCadastro.Create;
 end;
 
 end.

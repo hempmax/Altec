@@ -7,7 +7,8 @@ uses
   uEndereco in 'uEndereco.pas',
   Jsons in 'Jsons.pas',
   uILogavel in 'uILogavel.pas',
-  uAcoes in 'uAcoes.pas';
+  uAcoes in 'uAcoes.pas',
+  uListaCadastro in 'uListaCadastro.pas';
 
 {$R *.res}
 

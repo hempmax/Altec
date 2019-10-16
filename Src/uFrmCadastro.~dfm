@@ -1,10 +1,9 @@
 object FrmCadastro: TFrmCadastro
   Left = -497
   Top = 272
-  BorderStyle = bsDialog
+  Width = 466
+  Height = 600
   Caption = 'Cadastro'
-  ClientHeight = 561
-  ClientWidth = 450
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -13,7 +12,11 @@ object FrmCadastro: TFrmCadastro
   Font.Style = []
   OldCreateOrder = False
   Position = poScreenCenter
+  OnCreate = FormCreate
   OnShow = FormShow
+  DesignSize = (
+    450
+    561)
   PixelsPerInch = 96
   TextHeight = 13
   object gbxCadastro: TGroupBox
@@ -21,8 +24,12 @@ object FrmCadastro: TFrmCadastro
     Top = 5
     Width = 440
     Height = 365
+    Anchors = [akLeft, akTop, akRight]
     Caption = ' Dados Pessoais '
     TabOrder = 0
+    DesignSize = (
+      440
+      365)
     object lblNome: TLabel
       Left = 6
       Top = 25
@@ -54,6 +61,7 @@ object FrmCadastro: TFrmCadastro
       Top = 73
       Width = 42
       Height = 13
+      Anchors = [akTop, akRight]
       Caption = 'Telefone'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
@@ -132,6 +140,7 @@ object FrmCadastro: TFrmCadastro
       Top = 228
       Width = 33
       Height = 13
+      Anchors = [akTop, akRight]
       Caption = 'Cidade'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
@@ -145,6 +154,7 @@ object FrmCadastro: TFrmCadastro
       Top = 228
       Width = 14
       Height = 13
+      Anchors = [akTop, akRight]
       Caption = 'UF'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
@@ -158,6 +168,7 @@ object FrmCadastro: TFrmCadastro
       Top = 228
       Width = 22
       Height = 13
+      Anchors = [akTop, akRight]
       Caption = 'Pa'#237's'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
@@ -239,6 +250,7 @@ object FrmCadastro: TFrmCadastro
       Top = 45
       Width = 425
       Height = 21
+      Anchors = [akLeft, akTop, akRight]
       TabOrder = 0
     end
     object edtEmail: TEdit
@@ -246,13 +258,15 @@ object FrmCadastro: TFrmCadastro
       Top = 93
       Width = 300
       Height = 21
+      Anchors = [akLeft, akTop, akRight]
       TabOrder = 1
     end
     object edtTelefone: TMaskEdit
       Left = 312
       Top = 93
-      Width = 103
+      Width = 117
       Height = 21
+      Anchors = [akTop, akRight]
       EditMask = '!\(99\)9.9999-9999;0; '
       MaxLength = 15
       TabOrder = 2
@@ -269,6 +283,7 @@ object FrmCadastro: TFrmCadastro
       Top = 141
       Width = 221
       Height = 21
+      Anchors = [akLeft, akTop, akRight]
       EditMask = '000.000.000\-00;0; '
       MaxLength = 14
       TabOrder = 4
@@ -287,6 +302,7 @@ object FrmCadastro: TFrmCadastro
       Top = 192
       Width = 323
       Height = 21
+      Anchors = [akLeft, akTop, akRight]
       Enabled = False
       TabOrder = 7
     end
@@ -304,6 +320,7 @@ object FrmCadastro: TFrmCadastro
       Top = 248
       Width = 125
       Height = 21
+      Anchors = [akLeft, akTop, akRight]
       Enabled = False
       TabOrder = 8
     end
@@ -312,6 +329,7 @@ object FrmCadastro: TFrmCadastro
       Top = 248
       Width = 125
       Height = 21
+      Anchors = [akTop, akRight]
       Enabled = False
       TabOrder = 9
     end
@@ -327,6 +345,7 @@ object FrmCadastro: TFrmCadastro
       Top = 299
       Width = 294
       Height = 21
+      Anchors = [akLeft, akTop, akRight]
       TabOrder = 13
     end
     object cbxUf: TComboBox
@@ -334,6 +353,7 @@ object FrmCadastro: TFrmCadastro
       Top = 248
       Width = 51
       Height = 21
+      Anchors = [akTop, akRight]
       Enabled = False
       ItemHeight = 13
       TabOrder = 10
@@ -371,6 +391,7 @@ object FrmCadastro: TFrmCadastro
       Top = 248
       Width = 110
       Height = 21
+      Anchors = [akTop, akRight]
       Enabled = False
       ItemHeight = 13
       TabOrder = 11
@@ -395,6 +416,7 @@ object FrmCadastro: TFrmCadastro
     Top = 376
     Width = 440
     Height = 177
+    Anchors = [akLeft, akTop, akRight, akBottom]
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -12
