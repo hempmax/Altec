@@ -5,5 +5,6 @@ Este projeto visa demonstrar uma interface simples, voltado para o cadastro de i
 
 ## Configurações
 Será necessário configurar as informações de login para o servidor SMTP para testar o envio de e-mail através do aplicativo.
+
 ![Modelo de E-mail](https://github.com/hempmax/Altec/blob/master/Screenshots/Email1.png)
 
