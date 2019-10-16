@@ -1,0 +1,132 @@
+unit uAcoes;
+
+interface
+
+uses
+  Classes, SysUtils, uILogavel, uCadastro, XmlDoc, XMLIntf, IdSMTP, IdMessage,
+  IdAttachmentFile, IdText;
+
+type
+  TAcoes = class
+  private
+    FOwner: TComponent;
+    FLogavel: ILogavel;
+    FCadastro: TCadastro;
+
+    function CriaMensagem(de, para, assunto, arq: string): TIdMessage;
+    procedure SmtpSend(host, username: string; porta: integer; msg: TIdMessage);
+  public
+    constructor Create(owner: TComponent; log: ILogavel; obj: TCadastro);
+
+    function ExportarXml(): string;
+    procedure EnviarEmail(de, assunto, anexo: string);
+  end;
+
+implementation
+
+{ TAcoes }
+
+constructor TAcoes.Create(owner: TComponent; log: ILogavel; obj: TCadastro);
+begin
+  FOwner := owner;
+  FLogavel := log;
+  FCadastro := obj;
+end;
+
+procedure TAcoes.EnviarEmail(de, assunto, anexo: string);
+var
+  msg: TIdMessage;
+begin
+  FLogavel.InformarProcessamento('Iniciando o envio de e-mail');
+
+  msg := CriaMensagem(
+      de,
+      FCadastro.Email,
+      assunto,
+      anexo);
+
+  FLogavel.InformarProcessamento('Enviando email para: ' + FCadastro.Email);
+
+  //TODO: Informar as inforamções de login para o servidor SMTP
+  SmtpSend('smtp.fei.edu.br', 'atualizaweb@fei.edu.br', 587, msg);
+end;
+
+procedure TAcoes.SmtpSend(host, username: string; porta: integer; msg: TIdMessage);
+var
+  smtp: TIdSMTP;
+begin
+  smtp := TIdSMTP.Create(FOwner);
+  smtp.Username := username;
+
+  smtp.Connect(host, porta);
+  smtp.Send(msg);
+end;
+
+function TAcoes.ExportarXml(): string;
+var
+  arq, data, caminho, caminhoCompleto: string;
+  iRoot: IXMLNode;
+  xml: TXMLDocument;
+begin
+  FLogavel.InformarProcessamento('Iniciando a exportação do XML');
+
+  xml := TXMLDocument.Create(FOwner);
+  xml.Active := true;
+  xml.Encoding := 'utf-8';
+
+  DateTimeToString(data, 'yyyyMMdd_HHmmss', Now);
+  caminho := GetCurrentDir() + '\xml';
+  arq := data + '.xml';
+  caminhoCompleto := caminho + '\' + arq;
+
+  FLogavel.InformarProcessamento('Gerando o arquivo: ' + caminhoCompleto);
+
+  iRoot := xml.AddChild('cadastro');
+  iRoot := FCadastro.NodeXml(iRoot);
+
+  CreateDir(caminho);
+  xml.SaveToFile(caminhoCompleto);
+
+  Result := caminhoCompleto;
+
+  FLogavel.InformarProcessamento('Arquivo gerado com sucesso!');
+end;
+
+function TAcoes.CriaMensagem(de, para, assunto, arq: string): TIdMessage;
+var
+  corpo: string;
+  html: TIdText;
+  msg: TIdMessage;
+begin
+  corpo := ''
+    + '<html><body>'
+    + '<table style="width: 100%;padding: 10px;">'
+
+    + '<tr><td style="background: #654f8c;">'
+    + '<img src="https://www.altec.ws/web/wp-content/uploads/2017/07/light-logo.png" alt="Altec Sistemas" width="160" height="45"/>'
+    + '</td></tr>'
+
+    + '<tr><td>'
+    + 'Olá <strong>' + FCadastro.Nome + '</strong><br/><br/>'
+    + 'Seu cadastro foi realizado com sucesso, e suas informações podem ser visualizadas no arquivo em anexo.<br/><br/>'
+    + '<i>Mensagem automática, não responder.</i>'
+    + '</td></tr>'
+
+    + '</table></body></html>';
+
+  msg := TIdMessage.Create(FOwner);
+  msg.From.Address := de;
+  msg.Recipients.EMailAddresses := para;
+  msg.Subject := assunto;
+
+  if (Trim(arq) <> EmptyStr) then
+    TIdAttachmentFile.Create(msg.MessageParts, arq);
+  
+  html := TIdText.Create(msg.MessageParts, nil);
+  html.ContentType := 'text/html';
+  html.Body.Add(corpo);
+
+  Result := msg;
+end;
+
+end.
